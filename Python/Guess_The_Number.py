@@ -1,6 +1,7 @@
 import random
 randNum = None
 attempts = 0
+lastGuess = None
 
 def startPrompt():
     global attempts
@@ -15,42 +16,56 @@ def getRandInt():
     return randNum
     
 def checkInt(inputPrompt):
+    global lastGuess
+    
     try:
         Num = int(inputPrompt)
+        lastGuess = Num
         return Num
     except ValueError:
         try:
             Num = float(inputPrompt)
+            lastGuess = Num
             return Num
             
         except ValueError:
-            print("What you entered is not a number!")
+            print()
 
 def checkGuess(Num):
-    global randNum, attempts
+    global randNum, attempts, lastGuess
     
-    if Num < randNum:
-        print("Too low, try again!")
-        prompt = startPrompt()
+    try:
+        if Num < randNum:
+            print(f"Your guess, {lastGuess}, is too low! Try again!")
+            print()
+            prompt = startPrompt()
+            
+            Num = checkInt(prompt)
+            
+            checkGuess(Num)
+            
+        elif Num > randNum:
+            print(f"Your guess, {lastGuess}, is too high! Try again!")
+            print()
+            prompt = startPrompt()
+            
+            #Num = int(prompt)
+            Num = checkInt(prompt)
         
+            checkGuess(Num)
+        else:
+            print(f"You guessed the number, {randNum}, in {attempts} attempts!")
+            restartPrompt = input("Type 'restart' to re-play: ")
+            if restartPrompt == "restart":
+                start()
+    except TypeError:
+        print("What you entered is not number!")
+        prompt = startPrompt()
+    
         Num = checkInt(prompt)
         
         checkGuess(Num)
         
-    elif Num > randNum:
-        print("Too high, try again!")
-        prompt = startPrompt()
-        
-        #Num = int(prompt)
-        Num = checkInt(prompt)
-        
-        checkGuess(Num)
-    else:
-        print(f"You guessed the number, {randNum}, in {attempts} attempts!")
-        restartPrompt = input("Type 'restart' to re-play: ")
-        if restartPrompt == "restart":
-            start()
-          
 def start():
     global randNum, attempts
     
