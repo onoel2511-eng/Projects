@@ -59,7 +59,7 @@ def checkGuess(Num):
             if restartPrompt == "restart":
                 start()
     except TypeError:
-        print("What you entered is not number!")
+        print("What you entered is not a number!")
         prompt = startPrompt()
     
         Num = checkInt(prompt)
